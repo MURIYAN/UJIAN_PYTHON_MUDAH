@@ -3,25 +3,21 @@ import threading
 import time
 from datetime import datetime
 
-BASE_API_URL = "http://127.0.0.1:5000/get_player_stats"
-PLAYER_IDS_TO_FETCH = ["PLAYER01", "PLAYER03", "GHOSTPLAYER", "PLAYER05", "PLAYER02"]
-NUM_REQUESTS = len(PLAYER_IDS_TO_FETCH)
-CLIENT_LOG_FILE = "player_stats_fetch_log.txt"
+BASE_API_URL = "http://127.0.0.1:5000/check_domain"
+DOMAINS_TO_CHECK = ["google.com", "idekerenbanget.com", "tokopedia.com", "startupimpianku.id", "github.com"]
+NUM_REQUESTS = len(DOMAINS_TO_CHECK)
+CLIENT_LOG_FILE = "domain_checker_log.txt"
 
 client_log_lock = threading.Lock()
 
 with open(CLIENT_LOG_FILE, "w", encoding="utf-8") as f:
-    f.write(f"--- Player Stats Fetch Log Started: {datetime.now()} ---\n")
+    f.write(f"--- Domain Checker Log Started: {datetime.now()} ---\n")
 
 # ==============================================================================
 # SOAL 1: Implementasi Logging Thread-Safe
 # ==============================================================================
 def log_client_activity_safe(thread_name, message):
-    """
-    TUGAS ANDA (Soal 1):
-    Lengkapi fungsi ini untuk mencatat 'message' dari 'thread_name' ke
-    CLIENT_LOG_FILE secara thread-safe menggunakan 'client_log_lock'.
-    """
+
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     log_message = f"[{timestamp}] [{thread_name}] {message}\n"
     
@@ -34,12 +30,7 @@ def log_client_activity_safe(thread_name, message):
 # SOAL 2: Implementasi Fungsi Permintaan API
 # ==============================================================================
 def request_domain_status_from_api(domain, current_thread_name):
-    """
-    TUGAS ANDA (Soal 2):
-    Lengkapi fungsi ini untuk mengirim permintaan GET ke API ketersediaan domain
-    dan mencatat hasilnya menggunakan fungsi 'log_client_activity_safe' yang
-    telah Anda implementasikan di Soal 1.
-    """
+
     target_url = f"{BASE_API_URL}?domain={domain}"
     log_client_activity_safe(current_thread_name, f"Mengirim permintaan untuk domain: {domain}")
     
